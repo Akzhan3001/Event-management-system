@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
 //*******************************************************************
-// This program aims to cluter datapoint by KMeans Clustering method from data.csv file.
+// This program aims to cluster datapoint by KMeans Clustering method from data.csv file.
 // Student Name: Akzhan ABYLKASSYM
 // SID: 19201001
 //*******************************************************************
