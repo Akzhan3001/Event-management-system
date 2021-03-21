@@ -1,0 +1,179 @@
+ 
+SQL> SELECT name, COUNT(pnumber)
+  2    FROM EMPLOYEES, WORKS_ON
+  3    WHERE EMPLOYEES.ssn= WORKS_ON.ssn
+  4    GROUP BY EMPLOYEES.ssn, name;
+
+NAME            COUNT(PNUMBER)                                                  
+--------------- --------------                                                  
+Ramesh                       1                                                  
+Jennifer                     2                                                  
+Ahmad                        2                                                  
+Alicia                       2                                                  
+Franklin                     4                                                  
+Joyce                        2                                                  
+John                         2                                                  
+James                        1                                                  
+John                         2                                                  
+
+9 rows selected.
+
+
+
+SQL> SELECT ssn , AVG(hours)
+  2  FROM WORKS_ON
+  3  GROUP BY ssn
+  4  HAVING COUNT(pnumber) =2;
+
+SSN       AVG(HOURS)                                                            
+--------- ----------                                                            
+453453453         20                                                            
+123456789         20                                                            
+999887777         20                                                            
+987654321       17.5                                                            
+987987987         20                                                            
+101010101         10                                                            
+
+6 rows selected.
+
+SQL> SELECT ssn
+  2  FROM EMPLOYEES
+  3  WHERE salary > (SELECT AVG(salary) FROM EMPLOYEES);
+
+SSN                                                                             
+---------                                                                       
+333445555                                                                       
+987654321                                                                       
+666884444                                                                       
+888665555                                                                       
+888888888                                                                       
+316316316                                                                       
+
+6 rows selected.
+
+SQL> SELECT ssn
+  2  FROM EMPLOYEES
+  3  WHERE salary < ALL(SELECT salary FROM EMPLOYEES);
+
+no rows selected
+
+SQL> SELECT ssn
+  2  FROM EMPLOYEES
+  3  WHERE salary <= ALL(SELECT salary FROM EMPLOYEES);
+
+SSN                                                                             
+---------                                                                       
+101010101                                                                       
+
+
+
+SQL> SELECT E1.ssn
+  2  FROM EMPLOYEES E1
+  3  WHERE NOT EXISTS (SELECT * FROM EMPLOYEES E2 WHERE E1.salary>E2.salary);
+
+SSN                                                                             
+---------                                                                       
+101010101                                                                       
+
+SQL> SELECT ssn
+  2  FROM EMPLOYEES
+  3  MINUS
+  4  (SELECT ssn
+  5  FROM WORKS_ON);
+
+SSN                                                                             
+---------                                                                       
+142142142                                                                       
+173173173                                                                       
+316316316                                                                       
+888888888                                                                       
+
+
+
+SQL> SELECT DISTINCT name
+  2  FROM EMPLOYEES
+  3  WHERE NOT EXISTS (SELECT DISTINCT ssn FROM WORKS_ON WHERE WORKS_ON.ssn=EMPLOYEES.ssn);
+
+NAME                                                                            
+---------------                                                                 
+Peter                                                                           
+Jack                                                                            
+Kevin                                                                           
+Mary                                                                            
+
+
+
+SQL> SELECT ssn
+  2  FROM WORKS_ON
+  3  WHERE pnumber=3 AND pnumber IN( SELECT pnumber FROM PROJECTS WHERE pname<>'ProductY');
+
+SSN                                                                             
+---------                                                                       
+333445555                                                                       
+666884444                                                                       
+
+
+SQL> SELECT ssn
+  2  FROM WORKS_ON
+  3  WHERE pnumber=3 AND pnumber NOT IN(SELECT pnumber FROM PROJECTS WHERE pname='ProductY');
+
+SSN                                                                             
+---------                                                                       
+333445555                                                                       
+666884444                                                                       
+
+
+SQL> SELECT * FROM WORKS_ON;
+ 
+
+SSN          PNUMBER      HOURS                                                 
+--------- ---------- ----------                                                 
+123456789          1       32.5                                                 
+123456789          2        7.5                                                 
+666884444          3         40                                                 
+453453453          1         20                                                 
+453453453          2         20                                                 
+333445555          2         10                                                 
+333445555          3         10                                                 
+333445555         10         10                                                 
+333445555         20         10                                                 
+999887777         30         30                                                 
+999887777         10         10                                                 
+
+SSN          PNUMBER      HOURS                                                 
+--------- ---------- ----------                                                 
+987987987         10         35                                                 
+987987987         30          5                                                 
+987654321         30         20                                                 
+987654321         20         15                                                 
+888665555         20          0                                                 
+101010101          1       12.5                                                 
+101010101          2        7.5                                                 
+
+18 rows selected.
+
+SQL> SELECT * FROM PROJECTS;
+
+   PNUMBER PNAME           LOCATION           DNUMBER                           
+---------- --------------- --------------- ----------                           
+         1 ProductX        Bellaire                 5                           
+         2 ProductY        Sugarland                5                           
+         3 ProductZ        Houston                  5                           
+        10 Computerization Stafford                 4                           
+        20 Reorganization  Houston                  1                           
+        30 Newbenefits     Stafford                 4                           
+
+6 rows selected.
+
+SQL> 
+SQL> SELECT w1.ssn
+  2  FROM WORKS_ON w1
+  3  WHERE w1.pnumber=3
+  4  AND ssn NOT IN(SELECT ssn FROM PROJECTS, WORKS_ON  W2 WHERE W2.pnumber=PROJECTS.pnumber AND pname = 'ProductY');
+
+SSN                                                                             
+---------                                                                       
+666884444                                                                       
+                  
+
+SQL> spool off
