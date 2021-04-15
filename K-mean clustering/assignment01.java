@@ -21,7 +21,7 @@ public class assignment01 {
         File inputFile = new File(filename);
 
         if (!inputFile.exists()) {
-            System.out.println("The file " + filename + " is not found.");
+            System.out.println("The file " + filename + " is not found."); 
             System.exit(0);
         }
         Scanner in = new Scanner(inputFile);
