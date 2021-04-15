@@ -31,7 +31,7 @@ public class DocAppMS {
             System.out.println("*** System Startup initialized! ***\n");
             Scanner in = new Scanner(System.in);
             welcomeMenu();
-            ready();
+            ready(); 
             String line = in.nextLine();
             String[] tokensArray = getTokens(line);
             switch (tokensArray[0].toLowerCase()) {
