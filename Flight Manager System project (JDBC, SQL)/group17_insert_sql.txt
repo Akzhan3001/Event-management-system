@@ -1,0 +1,224 @@
+CREATE TABLE FLIGHTS (
+    FLIGHT_NO VARCHAR(5) NOT NULL,
+    DEPART_TIME DATE NOT NULL,
+    ARRIVE_TIME DATE NOT NULL,
+    DURATION REAL NOT NULL,
+    FARE REAL NOT NULL,
+    SEAT_LIMIT REAL NOT NULL,
+    SOURCE VARCHAR(20) NOT NULL,
+    DEST VARCHAR(20),
+    PRIMARY KEY(FLIGHT_NO)
+);
+
+CREATE TABLE CUSTOMERS (
+    CID VARCHAR(6) NOT NULL,
+    PASSPORT_NO VARCHAR(9) NOT NULL,
+    FULLNAME VARCHAR(50) NOT NULL,
+    NATIONALITY VARCHAR(20) NOT NULL,
+    PRIMARY KEY(CID),
+    UNIQUE(PASSPORT_NO)
+);
+
+CREATE TABLE BOOKINGS (
+    BOOKING_ID VARCHAR(36) NOT NULL,
+    FARE REAL,
+    CID VARCHAR(6) NOT NULL,
+    PRIMARY KEY(BOOKING_ID),
+    FOREIGN KEY(CID) REFERENCES CUSTOMERS ON DELETE CASCADE
+);
+
+CREATE TABLE TICKETS (
+    FLIGHT_NO VARCHAR(5) NOT NULL,
+    BOOKING_ID VARCHAR(36) NOT NULL,
+    PRIMARY KEY(FLIGHT_NO, BOOKING_ID)
+);
+
+COMMIT;
+
+
+--TRIGGER TO DECREASE THE SEAT LIMIT AFTER BOOKING
+CREATE OR REPLACE TRIGGER SEAT_LIMIT_AFTER_BOOKING
+AFTER INSERT ON TICKETS
+FOR EACH ROW 
+BEGIN
+ UPDATE FLIGHTS 
+ SET SEAT_LIMIT= SEAT_LIMIT - 1 
+ WHERE FLIGHT_NO = :new.FLIGHT_NO;
+END;
+
+--TRIGGER TO DECREASE THE SEAT LIMIT AFTER CANCELLING
+CREATE OR REPLACE TRIGGER SEAT_LIMIT_AFTER_CANCELLING
+AFTER DELETE ON TICKETS
+FOR EACH ROW 
+BEGIN
+ UPDATE FLIGHTS 
+ SET SEAT_LIMIT = SEAT_LIMIT + 1 
+ WHERE :old.FLIGHT_NO = FLIGHT_NO;
+END;
+
+--TRIGGER TO CHECK THE AVAILABILITY OF SEAT
+CREATE OR REPLACE TRIGGER AVAILABILITY_CONSTRAINT
+BEFORE INSERT ON TICKETS
+FOR EACH ROW
+DECLARE a INTEGER;
+BEGIN 
+ SELECT SEAT_LIMIT into a
+ FROM FLIGHTS 
+ WHERE FLIGHT_NO=:new.FLIGHT_NO;
+  IF(a=0) THEN
+    RAISE_APPLICATION_ERROR(-20000,'THERE IS NO AVAILABLE TICKETS FOR THIS FLIGHT');
+  END IF;
+END;
+
+--TRIGGER TO CHECK THE STATUS OF BOOKING BEFORE CANCELLATION
+CREATE OR REPLACE TRIGGER BOOKING_STATUS
+AFTER DELETE ON BOOKINGS
+FOR EACH ROW 
+DECLARE c INTEGER;
+BEGIN 
+ SELECT COUNT(*) into c
+ FROM TICKETS
+ WHERE :old.BOOKING_ID = BOOKING_ID;
+  IF(c <> 0) THEN
+   DELETE FROM TICKETS
+   WHERE :old.BOOKING_ID = BOOKING_ID;
+  ELSIF (c=0) THEN
+   RAISE_APPLICATION_ERROR(-20000, 'Fail to cancel.There is no such booking!');
+  END IF;
+END;
+
+
+INSERT INTO FLIGHTS
+VALUES(
+        'CX100',
+        to_date('15/3/2015,12:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        to_date('15/3/2015,16:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        (to_date('15/3/2015,16:00:00', 'dd/mm/yyyy,hh24:mi:ss') - to_date('15/3/2015,12:00:00', 'dd/mm/yyyy,hh24:mi:ss'))*24,
+        2000,
+        100,
+        'HK',
+        'Tokyo'
+    );
+INSERT INTO FLIGHTS
+VALUES(
+        'CX101',
+        to_date('15/3/2015,18:30:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        to_date('15/3/2015,23:30:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        (to_date('15/3/2015,16:00:00', 'dd/mm/yyyy,hh24:mi:ss') - to_date('15/3/2015,12:00:00', 'dd/mm/yyyy,hh24:mi:ss'))*24,
+        4000,
+        100,
+        'Tokyo',
+        'New York'
+    );
+INSERT INTO FLIGHTS
+VALUES(
+        'CX102',
+        to_date('15/3/2015,10:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        to_date('15/3/2015,13:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        (to_date('15/3/2015,16:00:00', 'dd/mm/yyyy,hh24:mi:ss') - to_date('15/3/2015,12:00:00', 'dd/mm/yyyy,hh24:mi:ss'))*24,
+        2000,
+        100,
+        'HK',
+        'Beijing'
+    );
+INSERT INTO FLIGHTS
+VALUES(
+        'CX103',
+        to_date('15/3/2015,15:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        to_date('15/3/2015,18:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        (to_date('15/3/2015,16:00:00', 'dd/mm/yyyy,hh24:mi:ss') - to_date('15/3/2015,12:00:00', 'dd/mm/yyyy,hh24:mi:ss'))*24,
+        1500,
+        100,
+        'Beijing',
+        'Tokyo'
+    );
+INSERT INTO FLIGHTS
+VALUES(
+        'CX104',
+        to_date('15/3/2015,10:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        to_date('15/3/2015,14:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        (to_date('15/3/2015,16:00:00', 'dd/mm/yyyy,hh24:mi:ss') - to_date('15/3/2015,12:00:00', 'dd/mm/yyyy,hh24:mi:ss'))*24,
+        1500,
+        100,
+        'New York',
+        'Beijing'
+    );
+INSERT INTO FLIGHTS
+VALUES(
+        'CX105',
+        to_date('15/3/2015,4:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        to_date('15/3/2015,09:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        (to_date('15/3/2015,09:00:00', 'dd/mm/yyyy,hh24:mi:ss') - to_date('15/3/2015,4:00:00', 'dd/mm/yyyy,hh24:mi:ss'))*24,
+        1000,
+        100,
+        'HK',
+        'New York'
+    );
+INSERT INTO FLIGHTS
+VALUES(
+        'CX106',
+        to_date('15/3/2015,23:40:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        to_date('16/3/2015,03:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        (to_date('16/3/2015,03:00:00', 'dd/mm/yyyy,hh24:mi:ss') - to_date('15/3/2015,23:40:00', 'dd/mm/yyyy,hh24:mi:ss'))*24,
+        5000,
+        100,
+        'New York',
+        'LA'
+    );
+INSERT INTO FLIGHTS
+VALUES(
+        'CX107',
+        to_date('15/3/2015,8:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        to_date('15/3/2015,11:00:00', 'dd/mm/yyyy,hh24:mi:ss'),
+        (to_date('15/3/2015,11:00:00', 'dd/mm/yyyy,hh24:mi:ss') - to_date('15/3/2015,8:00:00', 'dd/mm/yyyy,hh24:mi:ss'))*24,
+        1500,
+        100,
+        'Beijing',
+        'Tokyo'
+    );
+    
+INSERT INTO CUSTOMERS
+VALUES(
+        '111111',
+        'N09632373',
+        'Sana Chinaliyeva',
+        'Kazakh'
+    );
+INSERT INTO CUSTOMERS
+VALUES(
+        '222222',
+        'N09632374',
+        'Akzhan Abylkassym',
+        'Kazakh'
+    );
+INSERT INTO CUSTOMERS
+VALUES(
+        '333333',
+        'N09632375',
+        'Niyaz Nassyrov',
+        'Kazakh'
+    );
+INSERT INTO CUSTOMERS
+VALUES(
+        '444444',
+        'N09632376',
+        'Yerkegali Zhamalbekov',
+        'Kazakh'
+    );
+    
+
+INSERT INTO BOOKINGS
+VALUES('6ade3c28-a524-11eb-bcbc-0242ac130002', 2000, '111111');
+INSERT INTO BOOKINGS
+VALUES('74ce15d2-a524-11eb-bcbc-0242ac130002', 3000, '222222');
+
+
+INSERT INTO TICKETS
+VALUES('CX100', '6ade3c28-a524-11eb-bcbc-0242ac130002');
+INSERT INTO TICKETS
+VALUES('CX101', '74ce15d2-a524-11eb-bcbc-0242ac130002');
+INSERT INTO TICKETS
+VALUES('CX102', '74ce15d2-a524-11eb-bcbc-0242ac130002');
+
+COMMIT;
+SET AUTOCOMMIT ON
