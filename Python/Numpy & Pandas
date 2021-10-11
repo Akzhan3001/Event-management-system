@@ -1,0 +1,79 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Apr  8 16:03:31 2020
+
+@author: Akzhan Abylkassym - Assignment 3 from COMP1007 course (HKBU)
+This is an exercise to write a Python program on Data Analysis using Pandas. 
+
+Student ID: 19201001
+"""
+#%%1-5
+import pandas as pd#imporint pandas
+import numpy as np#imporint numpy
+import matplotlib.pyplot as plt#imporint matpolib 
+
+df = pd.read_csv('automobile_data.csv',index_col ="index" )#creating a dataframe by loading data from "automobile_data.csv"
+df=pd.DataFrame(df)
+print("DataFrame shape:\n",df.shape)#printing a shape of the DataFrame
+
+print("First 8 rows:\n",df.head(8))#printing of first 8 rows of the DF
+
+print("Last 8 rows:\n",df.tail(8))#printing of last 8 rows of the DF
+
+print("Columns' data types:\n",df.dtypes)#printing data types of columns
+
+df2=df.dropna()#dropping a missing data
+print("DataFrame with dropped values:\n",df2)
+
+print("Dataframe 2 shape:\t",df2.shape)#printing a shape of DF 
+
+df = df.set_index("engine-type")#setting a new index
+df = df.drop(["l","rotor"], axis=0)#dropping all rows with engine types 'l'and 'rotor'
+print("Dataframe without 'l' and 'rotor':\n",df)
+
+df.to_csv(r'C:\Users\abylk\OneDrive\Документы\Акжан\Past courses\Python\Assignment3\automobile_data2.csv', index = False)#saving new DF to csv file
+#%%6-8
+df = pd.read_csv('automobile_data2.csv')#creating a dataframe by loading data from "automobile_data2.csv"
+name = df['company'].unique()
+print("Company names:\n",df['company'].unique())#printing of found unique objects in dataframe
+
+company= df.groupby('company')#creating a groupby object toyota
+print("Only toyota:\n",company.get_group('toyota'))
+
+print("Average mileage :\n",company['average-mileage'].agg(np.mean))#printing of average mileage of each car company
+
+df=df.sort_values(by = 'price', axis=0,ascending=False)#Sorting all cars by the 'price' column in descending order
+print("Sorted dataFrame:\n",df)
+
+df.to_csv(r'C:\Users\abylk\OneDrive\Документы\Акжан\Past courses\Python\Assignment3\automobile_data_new.csv', index = False)#saving new DF to csv file
+#%%9
+fig = plt.figure()
+
+x = np.arange(16)#setting an x position
+df=company['price'].agg(np.mean)#values of the plot are the average price of each company
+plt.bar(x, df)#plotting values in accordance with the x pos
+##car_companies =('alfa-romeo','audi','bmw','chevrolet','dodge','honda','isuzu','jaguar','mazda','mercedes-benz','mitsubishi','nissan','porche','toyota','volkswagen','volvo')
+
+plt.xticks(x)
+plt.ylabel('Average price')#labeling the y axis
+plt.xlabel('Car companies')
+plt.title('Average price of different car companies')#titling the bar chart
+#%%10
+fig = plt.figure()
+
+df=(company['price'].agg(np.mean))/1000#y-values of the plot are the average price of each car companies
+print("Average price in (k$)\n",df)
+df2=(company['horsepower'].agg(np.mean))#average horse power
+df2=df2.sort_values(axis=0,ascending=False)#sorting an average horse power which is x - value
+y_pos = np.arange(len(df))
+horse_power = df2
+error = np.random.rand(len(df))#error margin
+
+plt.barh(y_pos, horse_power , xerr=error, align='center')
+plt.ylabel('Average price(K$)')
+plt.xlabel('Average horse power ')
+plt.title('Average price and Average horsepower')
+
+
+
+

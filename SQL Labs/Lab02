@@ -1,0 +1,164 @@
+SQL> CREATE TABLE EMPLOYEES(
+  2  	NAME	VARCHAR(15) NOT NULL,
+  3     HKID	CHAR(9),
+  4  	BDATE	DATE,
+  5  	SUPERVISOR	CHAR(9),
+  6  	DEPT 	INT 	NOT NULL,
+  7  	PRIMARY KEY(HKID));
+CREATE TABLE EMPLOYEES(
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> DROP TABLE EMPLOYEES
+  2  ;
+DROP TABLE EMPLOYEES
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys 
+
+
+SQL> DROP TABLE EMPLOYEES CASCADE CONSTRAINT;
+
+Table dropped.
+
+SQL> DROP TABLE DEPARTMENTS CASCADE CONSTRAINT;
+
+Table dropped.
+
+SQL> CREATE TABLE EMPLOYEES(
+  2  	NAME	VARCHAR(15) NOT NULL,
+  3  	HKID	CHAR(9),
+  4  	BDATE	DATE,
+  5  	SUPERVISOR	CHAR(9),
+  6  	DEPT	INT	NOT NULL,
+  7  	PRIMARY KEY(HKID));
+
+Table created.
+
+
+
+SQL> ALTER TABLE EMPLOYEES ADD CONSTRAINT
+  2  
+SQL> ALTER TABLE EMPLOYEES ADD CONSTRAINT SUP_CONST
+  2  FOREIGN KEY (SUPERVISOR) REFERENCES EMPLOYEES(HKID)
+  3  INITIALLY DEFERRED DEFERRABLE;
+
+Table altered.
+
+SQL> ALTER TABLE EMPLOYEES ADD CONSTRAINT DEPT_CONST
+  2  FOREIGN KEY (DEPT) REFERENCES DEPARTMENTS(DNO)
+  3  INITIALLY DEFERRED DEFERRABLE;
+
+Table altered.
+
+
+
+SQL> DESC EMPLOYEES
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ NAME                                      NOT NULL VARCHAR2(15)
+ HKID                                      NOT NULL CHAR(9)
+ BDATE                                              DATE
+ SUPERVISOR                                         CHAR(9)
+ DEPT                                      NOT NULL NUMBER(38)
+
+
+
+
+SQL> CREATE TABLE DEPARTMENTS(
+  2  	DNAME	VARCHAR(15) NOT NULL,
+  3  	DNO	INT,
+  4  	MANAGER	CHAR(9)	NOT NULL,
+  5  	PRIMARY KEY(DNO),
+  6  	UNIQUE(MANAGER),
+  7  	FOREIGN KEY (MANAGER) REFERENCES EMPLOYEES(HKID));
+
+Table created.
+
+SQL> SELECT *FROM EMPLOYEES;
+
+no rows selected
+
+SQL> INSERT INTO EMPLOYEES VALUES('John','123456789','22-MAY-84','333444555',1);
+
+1 row created.
+
+
+SQL> INSERT INTO EMPLOYEES VALUES('Alice','333444555','30-JUN-87','987654321',1);
+
+1 row created.
+
+SQL> INSERT INTO EMPLOYEES VALUES('BOB','987654321','14-DEC-87','333444555',2);
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+
+SQL> INSERT INTO DEPARTMENTS VALUES('Research',1,'333444555');
+
+1 row created.
+
+SQL> INSERT INTO DEPARTMENTS VALUES('Administration',2,'987654321');
+
+1 row created.
+
+SQL> SELECT * FROM EMPLOYEES;
+
+NAME            HKID      BDATE     SUPERVISO       DEPT                        
+--------------- --------- --------- --------- ----------                        
+John            123456789 22-MAY-84 333444555          1                        
+Alice           333444555 30-JUN-87 987654321          1                        
+BOB             987654321 14-DEC-87 333444555          2                        
+
+SQL> SELECT * FROM DEPARTMENTS;
+
+DNAME                  DNO MANAGER                                              
+--------------- ---------- ---------                                            
+Research                 1 333444555                                            
+Administration           2 987654321                                            
+
+
+
+SQL> SELECT to_char(BDATE,'MM/DD/YYYY') FROM EMPLOYEES;
+
+TO_CHAR(BD                                                                      
+----------                                                                      
+05/22/1984                                                                      
+06/30/1987                                                                      
+12/14/1987                                                                      
+
+SQL> SELECT * FROM EMPLOYEES;
+
+NAME            HKID      BDATE     SUPERVISO       DEPT                        
+--------------- --------- --------- --------- ----------                        
+John            123456789 22-MAY-84 333444555          1                        
+Alice           333444555 30-JUN-87 987654321          1                        
+BOB             987654321 14-DEC-87 333444555          2                        
+
+SQL> SELECT NAME,HKID,to_char(BDATE,'MM/DD/YYYY') FROM EMPLOYEES;
+
+NAME            HKID      TO_CHAR(BD                                            
+--------------- --------- ----------                                            
+John            123456789 05/22/1984                                            
+Alice           333444555 06/30/1987                                            
+BOB             987654321 12/14/1987                                            
+
+SQL> UPDATE DEPARTMENTS
+  2  SET DNAME='Admin'
+  3  WHERE DNAME='Administration';
+
+1 row updated.
+
+SQL> SELECT * FROM DEPARTMENTS;
+
+DNAME                  DNO MANAGER                                              
+--------------- ---------- ---------                                            
+Research                 1 333444555                                            
+Admin                    2 987654321                                            
+
+SQL> SPOOL OFF
