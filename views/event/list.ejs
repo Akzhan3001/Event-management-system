@@ -1,0 +1,27 @@
+<!--list.ejs-->
+<style>
+    .table {
+        border: 1px solid #DDD
+        }
+    
+      .td, th {
+        border-top: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+</style>
+
+<table class="table  is-striped is-hoverable is-fullwidth" >
+    
+    <tr>
+        <th>ID</th>
+        <th>Event</th>
+        <th>Organizer</th>
+      </tr>
+    <% events.forEach( function(event) { %>
+        
+        <tr><td><%= event.id %></td><td><a href="/event/read/<%= event.id %>"><%= event.name %></a></td> <td><%= event.organizer %></td></tr>
+    
+    <% }); %>
+ 
+</table>

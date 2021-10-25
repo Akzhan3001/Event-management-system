@@ -1,0 +1,144 @@
+<!--create.ejs-->
+<form action="/event/create" method="post">
+    <div class=row>
+        <div class="column">
+            <div class="field">
+                <label class="label">Event Name</label>
+                    <div class="control">
+                        <input class="input" type="text" name="name"  placeholder="Text input" required>
+                    </div>
+                </div>
+            </div>
+        
+        <div class="column">
+                <div class="field">
+                    <label class="label">Event Date</label>
+                        <div class="control">
+                            <input class="input" name="event_date" type="date" required>
+                        </div>
+                </div> 
+        </div>
+    </div>  
+
+    <div class="row">
+        <div class="column">
+            <div class="field">
+                <label class="label">Short Desciption</label>
+                    <div class="control">
+                        <input class="input" type="text" name="short_desc" placeholder="Text input" required>
+                    </div>
+            </div>
+        </div>
+
+    <div class="column">
+            <div class="field">
+                <label class="label">Start Time</label>
+                <div class="control">
+                    <input class="input" name = "start_time" type="time" required>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class=row>
+        <div class="column">
+            <div class="field">
+                <label class="label">Long Description</label>
+                <div class="control">
+                    <textarea class="textarea" name ="long_desc" placeholder="Textarea" required ></textarea>
+                </div>
+        </div>
+    </div>
+        <div class="column">
+            <div class="field">
+                <label class="label">End Time</label>
+                <div class="control">
+                    <input class="input" name ="end_time" type="time" required>
+                </div>
+            </div>
+        
+
+        
+            <div class="field">
+               <label class="label">Venue</label>
+                <div class="control">
+                    <div class="select">
+                    <select style="width: 400px;" name="venue" required>
+                        <option selected disabled="disabled">Select dropdown</option>
+                        <option name="Old_Campus">Old Campus</option>
+                        <option name="AAB702">AAB702</option>
+                        <option name="WLB302">WLB302</option>
+                        <option name="DLB205">DLB205</option>
+                        <option name="Library">Library</option>
+                    </select>
+                    </div>
+               </div>
+             </div>
+            </div>
+    </div>
+
+    <div class="row">
+        <div class="column">
+            <div class="field">
+                <label class="label">Image Url</label>
+                <div class="control">
+                    <input class="input is-link" type="text" name="img_url" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">  
+            <div class="field">
+                <label class="label">Quota</label>
+                <div class="control">
+                    <input class="input" type="text" name="quota" placeholder="Text input" required>  
+                </div>
+            </div>
+        </div>  
+    </div>
+
+   <div class="row">
+       <div class="column">
+        <div class="field">
+            <label class="label">Organizer</label>
+            <div class="control">
+            <div class="select">
+                <select style="width: 400px;"  name = "organizer" required>
+                    <option selected="false" disabled="disabled">Select dropdown</option>
+                    <option name="Music">Music Society</option>
+                    <option name="CS">Department of Computer Science</option>
+                    <option name="SU">Student Union</option>
+                    <option name="AR">Registry</option>
+                    <option name="CAS">Central Asian Society</option>
+                    <option name="CO">Career Office</option>
+                </select>
+            </div>
+            </div>
+        </div>
+        </div>
+
+    
+        <div class="column">
+            <div class="field">
+                <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" name="Highlight">
+                    Highlight Event
+                </label>
+                </div>
+            </div>
+        
+
+        
+        <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-link" type="submit">Submit</button>
+            </div>
+            <div class="control">
+              <button class="button is-link is-light" type="reset">Cancel</button>
+            </div>
+        
+         </div>
+        </div>
+
+</form>

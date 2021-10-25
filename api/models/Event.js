@@ -16,10 +16,48 @@ module.exports = {
       type: "string"
     } , 
 
-    age: {
-        type: "number"
+    short_desc: {
+      type: 'string'
+    } ,
 
+   long_desc: {
+    type: 'string'
+    } ,
+
+   img_url: {
+       type: 'string', columnType: 'date' 
+    } ,
+
+    organizer: {
+      type: "string"
+
+    },
+
+    event_date: {
+        type: 'string', columnType: 'date' 
+    } ,
+
+    start_time: {
+      type: 'string', columnType: 'dateTime' 
+   } ,
+
+    end_time: {
+      type: 'string', columnType: 'dateTime' 
+    } ,
+   
+    venue: {
+      type: "string"
+    } ,
+
+    quota: {
+      type: "number"
+    } ,
+    
+    Highlight: {
+      type: "string"
     }
+
+    
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
