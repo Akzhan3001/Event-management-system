@@ -7,7 +7,7 @@
     <%/* If you want to discourage search engines from indexing this site, uncomment the following line: */%>
     <%/* <meta name="robots" content="noindex"> */%>
 
-      
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!--
         Stylesheets and Preprocessors
         ==============================
@@ -35,15 +35,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
   </head>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="https://bulma.io">
           <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
         </a>
     
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-          <span aria-hidden="true"></span>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="true" data-target="navbarBasicExample">
+          <span aria-hidden="false"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
@@ -51,7 +51,7 @@
       
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-          <a href="/event/home" class="navbar-item">
+          <a href="/" class="navbar-item">
             Home
           </a>
     
@@ -65,7 +65,9 @@
           
           <a href="/event/list" class="navbar-item">
               Admin
-          </a>   
+          </a>  
+        </div>
+        </div> 
     </nav>
 
     <style>
@@ -76,21 +78,19 @@
         padding-left: 60px;
         padding-top: 40px;
       }
-        .row {
-          display: flex;
-        }
-
-        .column {
-          flex: 50%;
-        }
-  
   </style>
 
   <body>
-    <div class="div-1">
-        <h class="title is-4" style =" color: white;">Event Management System</h>
-        <h5 class="text" style ="  color: white;">HKBU Event Management System is a web-based system for department and student societes to broadcast events and activities as well as registration.</h5>
+    <div class="container is-fluid" style="background-color: #338EFF;">
+      <br>
+      <div class="container">
+        <h1 class="title" style ="color:white">Event Management System</h1>
+        <h2 class ="subtitle" style ="color:white" >HKBU Event Management System is web-based for department and student societies to broadcast events and
+          activities as well as registration.</h2>
+      </div>
+      <br>
     </div>
+    
     
     <section class="section">
       <div class="container ">

@@ -25,7 +25,7 @@ module.exports = {
     } ,
 
    img_url: {
-       type: 'string', columnType: 'date' 
+       type: 'string'
     } ,
 
     organizer: {
@@ -56,6 +56,7 @@ module.exports = {
     Highlight: {
       type: "string"
     }
+    
 
     
 

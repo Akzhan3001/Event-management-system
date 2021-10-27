@@ -33,10 +33,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-
+   'GET /': 'EventController.home',
    'GET /event/create': 'EventController.create',
    'POST /event/create': 'EventController.create',
-   'GET /': 'EventController.list',
    'GET /event':  'EventController.list',
    'GET /event/list': 'EventController.list',
    'GET /event/json': 'EventController.json',

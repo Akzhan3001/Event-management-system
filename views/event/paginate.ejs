@@ -1,86 +1,189 @@
 <!--paginate.ejs-->
-<table class="table is-bordered is-striped is-hoverable is-fullwidth">
+<div class="container">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-one-third"
+                <% events.forEach(function(event) { %>
+                    <div class="column is-one-third">
+                        <div class="card">
+                            <div class="card-image">
+                            <figure class="image is-square">
+                                <img src="<%= event.img_url %>" alt="Placeholder image">
+                            </figure>
+                            </div>
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-left">
+                                    <figure class="image is-48x48">
+                                        <img src="https://versions.bulma.io/0.7.0/images/placeholders/96x96.png" alt="Placeholder image">
+                                    </figure>
+                                    </div>
+                                    <div class="media-content">
+                                    <p class="title is-4"> <%= event.name %></p>
+                                    <p class="subtitle is-6"> <%= event.organizer %>h</p>
+                                    </div>
+                                </div>
+                            
+                                <div class="content">
+                                    
+                                    <%= event.name %> <br>
+                                    <%= event.event_date %>. <br>
+                                    <time ><%= event.start_time %> - <%= event.end_time %></time>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+            <% }); %>
     
-    <% persons.forEach( function(person) { %>
-    
-        <tr><td><%= person.name %></td><td><%= person.age %></td></tr>
+            <br>
+ <div class="container">    
+    <div class="column">
+        <form action="/event/search" method="get">
+            <div class="column">
+                <div class="field">
+                    <label class="label">Event Name</label>
+                        <div class="control">
+                                <input class="input is-medium" type="text" name="name"  placeholder="Text input">
+                            </div>
+                </div>
         
-    <% }); %>
+            
+        <div class="field">
+                <label class="label">Organizer</label>
+                    <div class="control">
+                        <div class="select is-medium">
+                            <select   name = "organizer" >
+                                <option selected="false" disabled="disabled">Select dropdown</option>
+                                <option name="Music">Music Society</option>
+                                <option name="CS">Department of Computer Science</option>
+                                <option name="SU">Student Union</option>
+                                <option name="AR">Registry</option>
+                                <option name="CAS">Central Asian Society</option>
+                                <option name="CO">Career Office</option>
+                            </select>
+                        </div>
+                    </div>
+            </div>
+           
+            <div class="field">
+                <label class="label">Start Date</label>
+                    <div class="control">
+                        <input class="input is-medium" name="start_date" type="date" >
+                    </div>
+            </div> 
+            
+            <div class="field">
+                <label class="label">End Date</label>
+                    <div class="control">
+                        <input class="input is-medium" name="end_date" type="date" >
+                    </div>
+            </div> 
+            
+                <div class="field">
+                    <label class="label">Venue</label>
+                        <div class="control">
+                            <div class="select is-medium">
+                                <select name="venue" >
+                                    <option selected disabled="disabled">Select dropdown</option>
+                                    <option name="Old_Campus">Old Campus</option>
+                                    <option name="AAB702">AAB702</option>
+                                    <option name="WLB302">WLB302</option>
+                                    <option name="DLB205">DLB205</option>
+                                    <option name="Library">Library</option>
+                                </select>
+                    </div>
+                </div>
+          </div>
+                <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-link" type="submit">Submit</button>
+                        </div>
+                    </div>
+                    </div> 
+                </div>
+            </form>
+        </div> 
+    </div> 
+</div>
+
+ <div class ="columns ">
+    <div class="column is-8"> 
+        <nav class="pagination" role="navigation" aria-label="pagination">
+            <a class="pagination-previous" id="previousButton">Previous</a>
+            <a class="pagination-next" id="nextButton">Next page</a>
+            <ul class="pagination-list">
+                <li>
+                    <a class="pagination-link" id="firstLink">1</a>
+                </li>
+                <li>
+                    <span class="pagination-ellipsis">&hellip;</span>
+                </li>
+                <li>
+                    <a class="pagination-link" id="previousLink">45</a>
+                </li>
+                <li>
+                    <a class="pagination-link is-current" id="currentLink">46</a>
+                </li>
+                <li>
+                    <a class="pagination-link" id="nextLink">47</a>
+                </li>
+                <li>
+                    <span class="pagination-ellipsis">&hellip;</span>
+                </li>
+                <li>
+                    <a class="pagination-link" id="lastLink">86</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+        <script>
+            function setPagination() {
+
+                var previousButton = document.getElementById("previousButton");
+                var nextButton = document.getElementById("nextButton");
+                var currentLink = document.getElementById("currentLink");
+                var previousLink = document.getElementById("previousLink");
+                var nextLink = document.getElementById("nextLink");
+                var firstLink = document.getElementById("firstLink");
+                var lastLink = document.getElementById("lastLink");
+
+                var numOfRecords = parseInt("<%= numOfRecords %>");
+                var limit = Math.max(parseInt("<%= req.query.limit %>"), 2) || 2;
+                var offset = Math.max(parseInt("<%= req.query.offset %>"), 0) || 0;
+
+                var baseUrl = "/event/paginate?limit=" + limit + "&offset=";
+
+                firstLink.href = baseUrl + 0;
+                previousButton.href = baseUrl + (offset - limit);
+                previousLink.href = baseUrl + (offset - limit);
+                currentLink.href = baseUrl + offset;
+                nextLink.href = baseUrl + (offset + limit);
+                nextButton.href = baseUrl + (offset + limit);
+                lastLink.href = baseUrl + (Math.ceil(numOfRecords / limit) - 1) * limit;
+                    
+                var currentPageNumber = Math.floor(offset / limit) + 1;
+
+                previousLink.innerHTML = currentPageNumber - 1;
+                currentLink.innerHTML = currentPageNumber;
+                nextLink.innerHTML = currentPageNumber + 1;
+                lastLink.innerHTML = Math.ceil(numOfRecords / limit); 
+
+                if (offset < limit) {
+                    previousButton.setAttribute("disabled", true);
+                    previousButton.href = "";
+                    previousLink.style.display = "none";
+                }
+
+                if (offset + limit >= numOfRecords) {
+                    nextButton.setAttribute("disabled", true);
+                    nextButton.href = "";
+                    nextLink.style.display = "none";
+                }
+            }
+
+            setPagination();
+
+        </script>
+        </div>
     
-</table>
-
-<nav class="pagination" role="navigation" aria-label="pagination">
-    <a class="pagination-previous" id="previousButton">Previous</a>
-    <a class="pagination-next" id="nextButton">Next page</a>
-    <ul class="pagination-list">
-        <li>
-            <a class="pagination-link" id="firstLink">1</a>
-        </li>
-        <li>
-            <span class="pagination-ellipsis">&hellip;</span>
-        </li>
-        <li>
-            <a class="pagination-link" id="previousLink">45</a>
-        </li>
-        <li>
-            <a class="pagination-link is-current" id="currentLink">46</a>
-        </li>
-        <li>
-            <a class="pagination-link" id="nextLink">47</a>
-        </li>
-        <li>
-            <span class="pagination-ellipsis">&hellip;</span>
-        </li>
-        <li>
-            <a class="pagination-link" id="lastLink">86</a>
-        </li>
-    </ul>
-</nav>
-<script>
-    function setPagination() {
-
-        var previousButton = document.getElementById("previousButton");
-        var nextButton = document.getElementById("nextButton");
-        var currentLink = document.getElementById("currentLink");
-        var previousLink = document.getElementById("previousLink");
-        var nextLink = document.getElementById("nextLink");
-        var firstLink = document.getElementById("firstLink");
-        var lastLink = document.getElementById("lastLink");
-
-        var numOfRecords = parseInt("<%= numOfRecords %>");
-        var limit = Math.max(parseInt("<%= req.query.limit %>"), 2) || 2;
-        var offset = Math.max(parseInt("<%= req.query.offset %>"), 0) || 0;
-
-        var baseUrl = "/person/paginate?limit=" + limit + "&offset=";
-
-        firstLink.href = baseUrl + 0;
-        previousButton.href = baseUrl + (offset - limit);
-        previousLink.href = baseUrl + (offset - limit);
-        currentLink.href = baseUrl + offset;
-        nextLink.href = baseUrl + (offset + limit);
-        nextButton.href = baseUrl + (offset + limit);
-        lastLink.href = baseUrl + (Math.ceil(numOfRecords / limit) - 1) * limit;
-              
-        var currentPageNumber = Math.floor(offset / limit) + 1;
-
-        previousLink.innerHTML = currentPageNumber - 1;
-        currentLink.innerHTML = currentPageNumber;
-        nextLink.innerHTML = currentPageNumber + 1;
-        lastLink.innerHTML = Math.ceil(numOfRecords / limit); 
-
-        if (offset < limit) {
-            previousButton.setAttribute("disabled", true);
-            previousButton.href = "";
-            previousLink.style.display = "none";
-        }
-
-        if (offset + limit >= numOfRecords) {
-            nextButton.setAttribute("disabled", true);
-            nextButton.href = "";
-            nextLink.style.display = "none";
-        }
-    }
-
-    setPagination();
-
-</script>
+</div>

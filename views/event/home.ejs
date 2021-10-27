@@ -1,0 +1,27 @@
+<div class="columns">
+    
+        <% events.forEach( function(event) { %>
+            
+            <div class="container">
+                <div class="columns">
+                <div class="column">
+                    <div class="container">
+                            <img style = "width: 400px; height: 300px;" src="<%= event.img_url %>" />
+                       
+                    </div>
+                </div>
+
+                <div class="column">
+                    <h class="title">
+                        <%= event.name %>
+                    </h><br><br>
+                    <h class="subtitle"><a href='/event/read/<%= event.id %>'>
+                            <%= event.name %>
+                        </a></h>
+                </div>
+          
+    </div>
+    </div>
+    <% }); %>
+
+</div>

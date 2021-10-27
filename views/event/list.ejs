@@ -20,7 +20,7 @@
       </tr>
     <% events.forEach( function(event) { %>
         
-        <tr><td><%= event.id %></td><td><a href="/event/read/<%= event.id %>"><%= event.name %></a></td> <td><%= event.organizer %></td></tr>
+        <tr><td><%= event.id %></td><td><a href="/event/update/<%= event.id %>"><%= event.name %></a></td> <td><%= event.organizer %></td></tr>
     
     <% }); %>
  

@@ -1,119 +1,96 @@
-<div class="column is-half-mobile card ">
-    <figure class="is-flex is-align-items-center is-justify-content-center image is-square">
-        <img style="object-fit:cover"  src="<%= event.img_url %>" />
-    </figure>
-</div>
-</div>
-
-    <div class=row>
-        <div class="column">
-            <div class="field">
-                <label class="label">Event Name</label>
+<figure class="is-flex is-align-items-center is-justify-content-center is-96x96">
+    <img style="height: 400px;" src="<%= event.img_url %>" />
+</figure>
+<br><br>
+<div class="container">
+    <div class="columns">
+        <div class="column"></div>
+        <div class="container">
+            <div class="column">
+                <div class="field">
+                    <label class="label">Event Name</label>
                     <div class="control">
                         <%= event.name %>
                     </div>
                 </div>
-            </div>
-        
-        <div class="column">
                 <div class="field">
-                    <label class="label">Event Date</label>
-                        <div class="control">
-                            <%= event.event_date %>
-                        </div>
-                </div> 
-        </div>
-    </div>  
-
-    <div class="row">
-        <div class="column">
-            <div class="field">
-                <label class="label">Short Desciption</label>
+                    <label class="label">Short Desciption</label>
                     <div class="control">
                         <%= event.short_desc %>
                     </div>
-            </div>
-        </div>
-
-    <div class="column">
-            <div class="field">
-                <label class="label">Start Time</label>
-                <div class="control">
-                    <%= event.start_time %>
                 </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class=row>
-        <div class="column">
-            <div class="field">
-                <label class="label">Long Description</label>
-                <div class="control">
-                    <%= event.long_desc %>
-                </div>
-        </div>
-    </div>
-        <div class="column">
-            <div class="field">
-                <label class="label">End Time</label>
-                <div class="control">
-                    <%= event.end_time %>
-                </div>
-            </div>
-        
-
-        
-            <div class="field">
-               <label class="label">Venue</label>
-               <div class="control">
-                    <%= event.venue %>
-               </div>
-             </div>
-            </div>
-    </div>
-
-    <div class="row">
-        
-        <div class="column">  
-            <div class="field">
-                <label class="label">Quota</label>
-                <div class="control">
-                    <%= event.quota %> 
-                </div>
-            </div>
-        </div> 
-        
-        <div class="column">
-            <div class="field">
-                <label class="label">Highlight</label>
-                <div class="control">
-                    <%= event.Highlight %>
-                </div>
-            </div>
-        </div> 
-    </div>
-
-   <div class="row">
-       <div class="column">
-            <div class="field">
-                <label class="label">Organizer</label>
-                <div class="control">
-                    <%= event.organizer%>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="column"></div>
-            <form  method="POST" action="/event/delete/<%= event.id %>" >
-                <div class="field is-grouped">
+                <div class="field">
+                    <label class="label">Long Description</label>
                     <div class="control">
-                         <button class="button is-link"><a href="/event/update/<%= event.id %>" style ="color:white;">Update</a></button>
+                        <%= event.long_desc %>
                     </div>
                 </div>
-            </form>
+
+                <div class="field">
+                    <label class="label">Quota</label>
+                    <div class="control">
+                        <%= event.quota %>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Organizer</label>
+                    <div class="control">
+                        <%= event.organizer %>
+                    </div>
+                </div>
+            </div>
         </div>
- 
-                
+        <div class="container">
+            <div class="column">
+                <div class="field">
+                    <label class="label">Event Date</label>
+                    <div class="control">
+                        <%= event.event_date %>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Start Time</label>
+                    <div class="control">
+                        <%= event.start_time %>
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <label class="label">End Time</label>
+                    <div class="control">
+                        <%= event.end_time %>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Venue</label>
+                    <div class="control">
+
+                        <%= event.venue %>
+
+                    </div>
+                </div>
+
+
+                <div class="field">
+                    <div class="control">
+                        <label class="label">Highlight</label>
+                        <div class="control">
+                            <%=event.Highlight %>
+                        </div>
+                    </div>
+                </div>
+<br>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-link is-light"><a href="/event/search">Go to Search page</a></button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
