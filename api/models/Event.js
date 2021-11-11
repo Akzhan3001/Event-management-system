@@ -56,7 +56,11 @@ module.exports = {
     Highlight: {
       type: "string"
     }
-    
+    ,
+    consultants: {
+      collection: 'User',
+      via: 'clients'
+    },
 
     
 

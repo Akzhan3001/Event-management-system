@@ -10,9 +10,10 @@
  */
 
 module.exports.bootstrap = async function() {
-
+ 
+  
   if (await Event.count() > 0) {
-      return;
+    return generateUsers();
   }
 
   await Event.createEach([
@@ -137,9 +138,30 @@ module.exports.bootstrap = async function() {
 
 
       ,
+      
      
       // etc.
   ]);
+
+  return generateUsers();
+  
+  async function generateUsers() {
+  
+   var hashedPassword = await sails.helpers.passwords.hashPassword('123456');
+
+   await User.createEach([
+      { username: "admin", password: hashedPassword, role:'admin' },
+      { username: "student", password: hashedPassword, role: 'student' }
+      // etc.
+    ]);
+  }
+   
+    
+    
+  
+  
+  
+ 
   // By convention, this is a good place to set up fake data during development.
   //
   // For example:

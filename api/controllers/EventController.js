@@ -11,6 +11,8 @@ module.exports = {
 
         if (req.method == "GET") return res.view('event/create');
 
+        req.body.Highlight = req.body.Highlight || "off";
+
         var event = await Event.create(req.body).fetch();
 
         return res.redirect("/event/list");
@@ -67,7 +69,7 @@ module.exports = {
             return res.view('event/update', { event: thatEvent });
 
         } else {
-
+            req.body.Highlight = req.body.Highlight || "off";
             var updatedEvent = await Event.updateOne(req.params.id).set(req.body);
 
             if (!updatedEvent) return res.notFound();
